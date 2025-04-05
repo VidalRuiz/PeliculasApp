@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">PeliculasApp</string>
+    <string name="prefix_genero">Genre: </string>
+    <string name="prefix_anio">Year: </string>
+    <string name="prefix_director">Director: </string>
+    <string name="add_to_favorites">Add to favorites</string>
+    <string name="bienvenida_personalizada">Hola %1$s 👋, te mostramos películas de tu género favorito: %2$s</string>
+    <string name="bienvenida_anonima">Bienvenido 👋, explora nuestro catálogo de películas</string>
+</resources>
