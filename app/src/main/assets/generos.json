@@ -1,0 +1,10 @@
+[
+  { "id": 1, "nombre": "Alternativa" },
+  { "id": 2, "nombre": "Bélica" },
+  { "id": 3, "nombre": "Crimen" },
+  { "id": 4, "nombre": "Crimen / Drama" },
+  { "id": 5, "nombre": "Drama" },
+  { "id": 6, "nombre": "Drama / Guerra" },
+  { "id": 7, "nombre": "Guerra" },
+  { "id": 8, "nombre": "Mafia / Crimen" }
+]

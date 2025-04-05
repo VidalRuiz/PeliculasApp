@@ -1,5 +1,10 @@
 package com.vidalruiz.peliculasapp.util
 
+import android.content.Context
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.vidalruiz.peliculasapp.data.model.Genero
+
 import com.vidalruiz.peliculasapp.data.model.FavoriteMovieEntity
 import com.vidalruiz.peliculasapp.data.model.Pelicula
 
@@ -50,4 +55,13 @@ fun FavoriteMovieEntity.toPelicula(): Pelicula {
         genero = this.genero,
         poster = this.poster
     )
+}
+
+fun cargarGenerosDesdeAssets(context: Context): List<Genero> {
+    val json = context.assets.open("generos.json")
+        .bufferedReader()
+        .use { it.readText() }
+
+    val tipoLista = object : TypeToken<List<Genero>>() {}.type
+    return Gson().fromJson(json, tipoLista)
 }
