@@ -18,6 +18,9 @@ interface PeliculaApiService {
     @GET(Endpoints.GET_PELICULAS)
     fun getPeliculas(): Call<List<Pelicula>>
 
-    @GET("${Endpoints.GET_PELICULAS}/{id}")
+    @GET(Endpoints.GET_PELICULA_POR_ID)
     fun getPelicula(@Path("id") id: Int): Call<Pelicula>
+
+    @GET(Endpoints.GET_PELICULA_POR_ID)
+    suspend fun obtenerPeliculaPorId(@Path("id") id: Int): Pelicula
 }

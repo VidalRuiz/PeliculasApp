@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vidalruiz.peliculasapp.databinding.FragmentFavoritosBinding
+import com.vidalruiz.peliculasapp.ui.detalle.DetallePeliculaFragment
 import com.vidalruiz.peliculasapp.ui.peliculas.PeliculasAdapter
 import com.vidalruiz.peliculasapp.ui.peliculas.PeliculasViewModel
 import com.vidalruiz.peliculasapp.util.toPelicula
@@ -27,7 +28,24 @@ class FavoritosFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = PeliculasAdapter { /* Aquí podrías permitir eliminar favoritos si gustas */ }
+        adapter = PeliculasAdapter(
+            onItemClick = { pelicula ->
+                val detalleFragment = DetallePeliculaFragment().apply {
+                    arguments = Bundle().apply {
+                        putInt("idPelicula", pelicula.id)
+                    }
+                }
+
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .replace(com.vidalruiz.peliculasapp.R.id.nav_host_fragment, detalleFragment)
+                    .addToBackStack(null)
+                    .commit()
+            },
+            onAgregarAFavoritos = {
+                // Puedes implementar eliminar si lo deseas
+            }
+        )
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter

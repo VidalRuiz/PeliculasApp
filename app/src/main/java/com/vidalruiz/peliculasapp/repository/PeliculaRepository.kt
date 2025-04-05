@@ -21,7 +21,7 @@ class PeliculaRepository {
     val peliculas: LiveData<List<Pelicula>> = _peliculas
 
     fun obtenerPeliculas() {
-        RetrofitClient.instance.getPeliculas().enqueue(object : Callback<List<Pelicula>> {
+        RetrofitClient.api.getPeliculas().enqueue(object : Callback<List<Pelicula>> {
             override fun onResponse(
                 call: Call<List<Pelicula>>,
                 response: Response<List<Pelicula>>

@@ -15,6 +15,7 @@ import com.vidalruiz.peliculasapp.data.model.Pelicula
  */
 object Endpoints {
     const val GET_PELICULAS = "peliculas"
+    const val GET_PELICULA_POR_ID = "peliculas/{id}"
 }
 
 /**
@@ -24,6 +25,8 @@ object Endpoints {
  */
 object ApiConfig {
     const val BASE_URL = "https://private-d60fbf-peliculasfavoritas.apiary-mock.com/"
+
+
 }
 
 /**

@@ -12,7 +12,8 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 
 object RetrofitClient {
-    val instance: PeliculaApiService by lazy {
+
+    val api: PeliculaApiService by lazy {
         val retrofit = Retrofit.Builder()
             .baseUrl(ApiConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

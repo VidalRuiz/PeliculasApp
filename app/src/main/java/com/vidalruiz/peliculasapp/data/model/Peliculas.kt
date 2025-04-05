@@ -13,5 +13,8 @@ data class Pelicula(
     val anio: Int,
     val director: String,
     val genero: String,
-    val poster: String
+    val poster: String,
+    val duracion: String? = null,
+    val idioma: String? = null,
+    val sinopsis: String? = null
 )

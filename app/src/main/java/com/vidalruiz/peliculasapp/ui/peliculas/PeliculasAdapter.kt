@@ -21,8 +21,9 @@ import com.vidalruiz.peliculasapp.data.model.Pelicula
  */
 
 class PeliculasAdapter(
+    private val onItemClick: (Pelicula) -> Unit,
     private val onAgregarAFavoritos: (Pelicula) -> Unit
-) : RecyclerView.Adapter<PeliculasAdapter.PeliculaViewHolder>() {
+): RecyclerView.Adapter<PeliculasAdapter.PeliculaViewHolder>() {
 
     private var peliculas: List<Pelicula> = emptyList()
     private var favoritos: Set<Int> = emptySet()
@@ -63,7 +64,9 @@ class PeliculasAdapter(
             tvGenero.text = context.getString(R.string.prefix_genero) + pelicula.genero
             tvAnio.text = context.getString(R.string.prefix_anio) + pelicula.anio
             tvDirector.text = context.getString(R.string.prefix_director) + pelicula.director
-
+            itemView.setOnClickListener {
+                onItemClick(pelicula)
+            }
             try {
                 Glide.with(context)
                     .load(pelicula.poster)

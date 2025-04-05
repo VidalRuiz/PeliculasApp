@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.vidalruiz.peliculasapp.R
 import com.vidalruiz.peliculasapp.databinding.FragmentCatalogoBinding
+import com.vidalruiz.peliculasapp.ui.detalle.DetallePeliculaFragment
 import com.vidalruiz.peliculasapp.ui.peliculas.PeliculasAdapter
 import com.vidalruiz.peliculasapp.ui.peliculas.PeliculasViewModel
 import com.vidalruiz.peliculasapp.util.toFavoriteEntity
@@ -27,10 +29,25 @@ class CatalogoFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // Adapter con callback para agregar a favoritos
-        adapter = PeliculasAdapter { pelicula ->
-            viewModel.agregarAFavoritos(pelicula.toFavoriteEntity())
-        }
+        // Adapter con callbacks para detalle y favoritos
+        adapter = PeliculasAdapter(
+            onItemClick = { pelicula ->
+                val detalleFragment = DetallePeliculaFragment().apply {
+                    arguments = Bundle().apply {
+                        putInt("idPelicula", pelicula.id)
+                    }
+                }
+
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .replace(R.id.nav_host_fragment, detalleFragment)
+                    .addToBackStack(null)
+                    .commit()
+            },
+            onAgregarAFavoritos = { pelicula ->
+                viewModel.agregarAFavoritos(pelicula.toFavoriteEntity())
+            }
+        )
 
         // Configurar RecyclerView
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
