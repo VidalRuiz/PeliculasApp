@@ -1,25 +1,54 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="24dp"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
 
+    <!-- Título dentro del diálogo (opcional si lo controlas desde AlertDialog.Builder) -->
+    <!-- <TextView
+        android:text="Editar Perfil"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"/> -->
+
+    <!-- Etiqueta: Nombre -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nombre"
+        android:textStyle="bold"
+        android:layout_marginBottom="4dp"/>
     <EditText
         android:id="@+id/editNombre"
-        android:hint="Nombre"
-        android:inputType="textPersonName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tu nombre"/>
+
+    <!-- Etiqueta: Sexo -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sexo"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"/>
+    <Spinner
+        android:id="@+id/spinnerSexo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <Spinner
-        android:id="@+id/spinnerSexo"
-        android:layout_marginTop="12dp"
+    <!-- Etiqueta: Género favorito -->
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="wrap_content"
+        android:text="Género favorito"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"/>
     <Spinner
         android:id="@+id/spinnerGenero"
-        android:layout_marginTop="12dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 </LinearLayout>
