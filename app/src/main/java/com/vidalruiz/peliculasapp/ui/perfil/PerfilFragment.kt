@@ -37,13 +37,29 @@ class PerfilFragment : Fragment() {
         binding.btnEditar.setOnClickListener {
             mostrarDialogoEditar()
         }
+        binding.btnReset.setOnClickListener {
+            mostrarDialogoReset()
+        }
     }
-
+    private fun mostrarDialogoReset() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.restablecer_perfil))
+            .setMessage(getString(R.string.esto_eliminar_tus_preferencias_guardadas_y_te_llevar_de_nuevo_a_la_pantalla_de_bienvenida))
+            .setPositiveButton(getString(R.string.aceptar)) { _, _ ->
+                PreferenceHelper.clearUserInfo(requireContext())
+                // Reiniciamos app desde la bienvenida
+                val intent = requireActivity().intent
+                requireActivity().finish()
+                startActivity(intent)
+            }
+            .setNegativeButton(getString(R.string.cancelar), null)
+            .show()
+    }
     /**
      * Carga los datos del usuario desde SharedPreferences y los muestra.
      */
     private fun cargarDatos() {
-        val nombre = PreferenceHelper.getUserName(requireContext())
+        val nombre = PreferenceHelper.getUserName(requireContext()) ?: getString(R.string.anonimo)
         val sexo = PreferenceHelper.getUserGender(requireContext())
         val categoria = PreferenceHelper.getUserCategory(requireContext())
 

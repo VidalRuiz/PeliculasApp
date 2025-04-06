@@ -30,19 +30,18 @@ object PreferenceHelper {
      * @param category Género favorito (extraído del catálogo de géneros)
     */
     fun saveUserInfo(context: Context, name: String, gender: String, category: String) {
-    getPrefs(context).edit()
-    .putString(Constants.PREF_NOMBRE, name)
-    .putString(Constants.PREF_SEXO, gender)
-    .putString(Constants.PREF_GENERO, category)
-    .apply()
+        getPrefs(context).edit()
+            .putString(Constants.PREF_NOMBRE, name)
+            .putString(Constants.PREF_SEXO, gender)
+            .putString(Constants.PREF_GENERO, category)
+            .apply()
     }
 
     /**
      * Devuelve el nombre del usuario o "Invitado" si no hay datos guardados.
     */
-    fun getUserName(context: Context): String =
-    getPrefs(context).getString(Constants.PREF_NOMBRE, "Invitado") ?: "Invitado"
-
+    fun getUserName(context: Context): String? =
+        getPrefs(context).getString(Constants.PREF_NOMBRE, null)
     /**
      * Devuelve el sexo del usuario o "N/A" si no está definido.
     */
@@ -54,4 +53,17 @@ object PreferenceHelper {
     */
     fun getUserCategory(context: Context): String =
     getPrefs(context).getString(Constants.PREF_GENERO, "N/A") ?: "N/A"
+
+    /**
+     * Elimina la información del usuario guardada en SharedPreferences.
+     *
+     * @param context Contexto de la app
+     */
+    fun clearUserInfo(context: Context) {
+        getPrefs(context).edit()
+            .remove(Constants.PREF_NOMBRE)
+            .remove(Constants.PREF_SEXO)
+            .remove(Constants.PREF_GENERO)
+            .apply()
+    }
 }

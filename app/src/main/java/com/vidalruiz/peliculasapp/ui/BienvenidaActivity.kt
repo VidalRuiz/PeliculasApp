@@ -26,6 +26,14 @@ class BienvenidaActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Verificamos si ya hay datos del usuario guardados
+        val nombreGuardado = PreferenceHelper.getUserName(this)
+        if (!nombreGuardado.isNullOrEmpty()) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+            return
+        }
         binding = ActivityBienvenidaBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

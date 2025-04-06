@@ -88,5 +88,15 @@
             android:backgroundTint="@color/material_dynamic_primary0"
             android:textColor="@android:color/white"
             android:padding="12dp"/>
+
+        <Button
+            android:id="@+id/btnReset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Restablecer perfil"
+            android:backgroundTint="@android:color/holo_red_light"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="12dp"
+            android:padding="12dp" />
     </LinearLayout>
 </ScrollView>
