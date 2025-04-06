@@ -31,9 +31,9 @@ object JsonUtils {
         } catch (e: Exception) {
             e.printStackTrace()
             listOf(
-                Sexo("Male", "Masculino"),
-                Sexo("Female", "Femenino"),
-                Sexo("Other", "Otro")
+                Sexo("Masculino", "Masculino"),
+                Sexo("Femenino", "Femenino"),
+                Sexo("Otro", "Otro")
             ) // Fallback por si falla la carga
         }
     }

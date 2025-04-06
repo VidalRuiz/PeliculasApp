@@ -25,13 +25,12 @@ class PeliculasViewModel(application: Application) : AndroidViewModel(applicatio
     private val peliculaRepository = PeliculaRepository()
 
     private val favoritosRepository: FavoritosRepository by lazy {
-        val dao = AppDatabase.getDatabase(application).favoriteMovieDao()
+        val dao = AppDatabase.getInstance(application).favoriteMovieDao()
         FavoritosRepository(dao)
     }
 
     val listaPeliculas: LiveData<List<Pelicula>> = peliculaRepository.peliculas
 
-    // ✅ Esto es lo que faltaba para que tus fragmentos compilen
     val favoritos: LiveData<List<FavoriteMovieEntity>> = favoritosRepository.favoritos
 
     fun cargarPeliculas() {

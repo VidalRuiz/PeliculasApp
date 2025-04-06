@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- Base -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
-    <!-- Fondo suave -->
+    <!-- Fondo -->
     <color name="fondo_claro">#F5F5F5</color> <!-- Blanco humo -->
+    <color name="background">#FAFAFA</color> <!-- Fondo general -->
 
     <!-- Texto -->
     <color name="texto_primario">#222222</color>
     <color name="texto_secundario">#555555</color>
+    <color name="gray_dark">#666666</color>
+    <color name="gray_light">#CCCCCC</color>
 
-    <!-- Detalles -->
+    <!-- Detalles y UI -->
     <color name="gris_claro">#DDDDDD</color>
-    <color name="acento">#3F51B5</color> <!-- azul material -->
+    <color name="primary">#3F51B5</color> <!-- Azul material -->
+    <color name="primary_dark">#303F9F</color>
+    <color name="acento">#FF4081</color> <!-- Rosa vibrante -->
+    <color name="highlight">#E8EAF6</color> <!-- Fondo resaltado -->
+
 </resources>

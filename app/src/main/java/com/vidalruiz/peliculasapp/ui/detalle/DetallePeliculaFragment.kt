@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import com.vidalruiz.peliculasapp.databinding.FragmentDetallePeliculaBinding
+import com.vidalruiz.peliculasapp.R
 import com.vidalruiz.peliculasapp.data.model.Pelicula
+import com.vidalruiz.peliculasapp.databinding.FragmentDetallePeliculaBinding
 import com.vidalruiz.peliculasapp.data.network.RetrofitClient
+import com.vidalruiz.peliculasapp.repository.FavoritosRepository
+import com.vidalruiz.peliculasapp.utils.toFavoriteEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,6 +24,9 @@ class DetallePeliculaFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var idPelicula: Int = -1
+    private lateinit var favoritosRepository: FavoritosRepository
+    private var esFavorita = false
+    private lateinit var peliculaActual: Pelicula
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +38,7 @@ class DetallePeliculaFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetallePeliculaBinding.inflate(inflater, container, false)
+        favoritosRepository = FavoritosRepository(requireContext())
         return binding.root
     }
 
@@ -39,7 +46,13 @@ class DetallePeliculaFragment : Fragment() {
         if (idPelicula != -1) {
             obtenerPeliculaPorId(idPelicula)
         } else {
-            Toast.makeText(requireContext(), "ID de película inválido", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.id_pelicula_invalido), Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnFavorito.setOnClickListener {
+            if (::peliculaActual.isInitialized) {
+                toggleFavorito()
+            }
         }
     }
 
@@ -53,23 +66,60 @@ class DetallePeliculaFragment : Fragment() {
             } catch (e: Exception) {
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Error al cargar película", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.error_cargar_pelicula), Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
 
     private fun mostrarPelicula(pelicula: Pelicula) {
+        peliculaActual = pelicula
+
         binding.tvTitulo.text = pelicula.titulo
-        binding.tvDirector.text = "Director: ${pelicula.director}"
-        binding.tvGenero.text = "Género: ${pelicula.genero}"
-        binding.tvDuracion.text = "Duración: ${pelicula.duracion}"
-        binding.tvIdioma.text = "Idioma: ${pelicula.idioma}"
-        binding.tvSinopsis.text = "Sinopsis: ${pelicula.sinopsis}"
+        binding.tvDirector.text = getString(R.string.prefix_director) + pelicula.director
+        binding.tvGenero.text = getString(R.string.prefix_genero) + pelicula.genero
+        binding.tvDuracion.text = getString(R.string.prefix_duracion) + pelicula.duracion
+        binding.tvIdioma.text = getString(R.string.prefix_idioma) + pelicula.idioma
+        binding.tvSinopsis.text = getString(R.string.prefix_sinopsis) + pelicula.sinopsis
 
         Glide.with(requireContext())
             .load(pelicula.poster)
             .into(binding.imgPoster)
+
+        // Verificar si ya está en favoritos
+        CoroutineScope(Dispatchers.IO).launch {
+            esFavorita = favoritosRepository.esFavorito(pelicula.id)
+            withContext(Dispatchers.Main) {
+                actualizarTextoBotonFavorito()
+            }
+        }
+    }
+
+    private fun actualizarTextoBotonFavorito() {
+        binding.btnFavorito.text = if (esFavorita)
+            getString(R.string.remove_from_favorites)
+        else
+            getString(R.string.add_to_favorites)
+    }
+
+    private fun toggleFavorito() {
+        CoroutineScope(Dispatchers.IO).launch {
+            if (esFavorita) {
+                favoritosRepository.eliminarDeFavoritos(peliculaActual.toFavoriteEntity())
+                esFavorita = false
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), getString(R.string.removed_from_favorites), Toast.LENGTH_SHORT).show()
+                    actualizarTextoBotonFavorito()
+                }
+            } else {
+                favoritosRepository.agregarAFavoritos(peliculaActual.toFavoriteEntity())
+                esFavorita = true
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), getString(R.string.added_to_favorites), Toast.LENGTH_SHORT).show()
+                    actualizarTextoBotonFavorito()
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {

@@ -1,15 +1,28 @@
 <resources>
+
+    <!-- App -->
     <string name="app_name">PeliculasApp</string>
-    <string name="prefix_genero">Genre: </string>
-    <string name="prefix_anio">Year: </string>
-    <string name="prefix_director">Director: </string>
-    <string name="add_to_favorites">Add to favorites</string>
-    <string name="bienvenida_personalizada">Hola %1$s 👋, te mostramos películas de tu género favorito: %2$s</string>
-    <string name="bienvenida_anonima">Bienvenido 👋, explora nuestro catálogo de películas</string>
+
+    <!-- Catálogo y Detalle -->
     <string name="poster">Poster de la película</string>
+    <string name="prefix_genero">Género: </string>
+    <string name="prefix_anio">Año: </string>
+    <string name="prefix_director">Director: </string>
+    <string name="prefix_duracion">Duración: </string>
+    <string name="prefix_idioma">Idioma: </string>
+    <string name="prefix_sinopsis">Sinopsis: </string>
+
+    <!-- Favoritos -->
+    <string name="agregar_a_favoritos">Agregar a favoritos</string>
+    <string name="add_to_favorites">Agregar a favoritos</string>
+    <string name="remove_from_favorites">Quitar de favoritos</string>
+    <string name="added_to_favorites">Película agregada a favoritos</string>
+    <string name="removed_from_favorites">Película eliminada de favoritos</string>
 
     <!-- Bienvenida -->
     <string name="bienvenido">¡Bienvenido!</string>
+    <string name="bienvenida_personalizada">Hola %1$s 👋, te mostramos películas de tu género favorito: %2$s</string>
+    <string name="bienvenida_anonima">Bienvenido 👋, explora nuestro catálogo de películas</string>
     <string name="cual_es_tu_nombre">¿Cuál es tu nombre?</string>
     <string name="sexo">Sexo</string>
     <string name="genero_favorito">Género favorito</string>
@@ -28,4 +41,9 @@
     <string name="editar_perfil">Editar Perfil</string>
     <string name="guardar">Guardar</string>
     <string name="cancelar">Cancelar</string>
+
+    <!-- Errores y avisos -->
+    <string name="error_cargar_pelicula">Error al cargar película</string>
+    <string name="id_pelicula_invalido">ID de película inválido</string>
+
 </resources>

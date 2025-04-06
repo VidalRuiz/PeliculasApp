@@ -1,7 +1,9 @@
 package com.vidalruiz.peliculasapp.repository
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import com.vidalruiz.peliculasapp.data.local.FavoriteMovieDao
+import com.vidalruiz.peliculasapp.data.local.AppDatabase
 import com.vidalruiz.peliculasapp.data.model.FavoriteMovieEntity
 
 /**
@@ -9,8 +11,11 @@ import com.vidalruiz.peliculasapp.data.model.FavoriteMovieEntity
  * Created on: April 4, 2025
  * Description: Repository for accessing favorite movies using the DAO and Room database.
  */
-
 class FavoritosRepository(private val favoriteMovieDao: FavoriteMovieDao) {
+
+    constructor(context: Context) : this(
+        AppDatabase.getInstance(context).favoriteMovieDao()
+    )
 
     val favoritos: LiveData<List<FavoriteMovieEntity>> = favoriteMovieDao.getAllFavorites()
 
