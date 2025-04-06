@@ -1,58 +1,20 @@
 package com.vidalruiz.peliculasapp.ui.favoritos
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.vidalruiz.peliculasapp.databinding.FragmentFavoritosBinding
-import com.vidalruiz.peliculasapp.ui.detalle.DetallePeliculaFragment
-import com.vidalruiz.peliculasapp.ui.peliculas.PeliculasAdapter
+import com.vidalruiz.peliculasapp.ui.peliculas.BasePeliculasFragment
 import com.vidalruiz.peliculasapp.ui.peliculas.PeliculasViewModel
 import com.vidalruiz.peliculasapp.utils.toPelicula
 
-class FavoritosFragment : Fragment() {
+class FavoritosFragment : BasePeliculasFragment() {
 
-    private lateinit var binding: FragmentFavoritosBinding
-    private val viewModel: PeliculasViewModel by viewModels()
-    private lateinit var adapter: PeliculasAdapter
+    override val viewModel: PeliculasViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentFavoritosBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = PeliculasAdapter(
-            onItemClick = { pelicula ->
-                val detalleFragment = DetallePeliculaFragment().apply {
-                    arguments = Bundle().apply {
-                        putInt("idPelicula", pelicula.id)
-                    }
-                }
-
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                    .replace(com.vidalruiz.peliculasapp.R.id.nav_host_fragment, detalleFragment)
-                    .addToBackStack(null)
-                    .commit()
-            },
-            onAgregarAFavoritos = {
-                // Puedes implementar eliminar si lo deseas
-            }
-        )
-
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = adapter
-
+    override fun observarPeliculas() {
         viewModel.favoritos.observe(viewLifecycleOwner) { favoritos ->
-            adapter.submitList(favoritos.map { it.toPelicula() })
-            adapter.actualizarFavoritos(favoritos.map { it.id }.toSet())
+            val peliculas = favoritos.map { it.toPelicula() }
+            adapter.submitList(peliculas)
+            adapter.actualizarFavoritos(peliculas.map { it.id }.toSet())
+            mostrarMensajeVacio(peliculas.isEmpty())
         }
     }
 }
