@@ -6,6 +6,26 @@
     <string name="add_to_favorites">Add to favorites</string>
     <string name="bienvenida_personalizada">Hola %1$s 👋, te mostramos películas de tu género favorito: %2$s</string>
     <string name="bienvenida_anonima">Bienvenido 👋, explora nuestro catálogo de películas</string>
-    <!-- Agrega esta línea: -->
     <string name="poster">Poster de la película</string>
+
+    <!-- Bienvenida -->
+    <string name="bienvenido">¡Bienvenido!</string>
+    <string name="cual_es_tu_nombre">¿Cuál es tu nombre?</string>
+    <string name="sexo">Sexo</string>
+    <string name="genero_favorito">Género favorito</string>
+    <string name="continuar">Continuar</string>
+    <string name="entrar_como_anonimo">Entrar como anónimo</string>
+
+    <!-- Sexo options -->
+    <string name="masculino">Masculino</string>
+    <string name="femenino">Femenino</string>
+    <string name="otro">Otro</string>
+
+    <!-- Validaciones -->
+    <string name="campo_obligatorio">Este campo es obligatorio</string>
+
+    <!-- Perfil / Diálogo de edición -->
+    <string name="editar_perfil">Editar Perfil</string>
+    <string name="guardar">Guardar</string>
+    <string name="cancelar">Cancelar</string>
 </resources>

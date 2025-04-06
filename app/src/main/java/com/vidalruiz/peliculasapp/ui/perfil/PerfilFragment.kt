@@ -1,6 +1,5 @@
 package com.vidalruiz.peliculasapp.ui.perfil
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,17 +12,20 @@ import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.vidalruiz.peliculasapp.R
-import com.vidalruiz.peliculasapp.databinding.FragmentPerfilBinding
-import java.io.InputStreamReader
 import com.vidalruiz.peliculasapp.data.model.Genero
+import com.vidalruiz.peliculasapp.data.model.Sexo
+import com.vidalruiz.peliculasapp.databinding.FragmentPerfilBinding
+import com.vidalruiz.peliculasapp.util.PreferenceHelper
+import java.io.InputStreamReader
 
+/**
+ * Fragmento que muestra y permite editar el perfil del usuario.
+ * Usa PreferenceHelper para leer y guardar preferencias.
+ * Carga catálogos desde archivos JSON en assets.
+ */
 class PerfilFragment : Fragment() {
 
     private lateinit var binding: FragmentPerfilBinding
-
-    private val prefs by lazy {
-        requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,16 +43,23 @@ class PerfilFragment : Fragment() {
         }
     }
 
+    /**
+     * Carga los datos del usuario desde SharedPreferences y los muestra.
+     */
     private fun cargarDatos() {
-        val nombre = prefs.getString("nombre", "Invitado")
-        val sexo = prefs.getString("sexo", "N/A")
-        val categoria = prefs.getString("categoria", "N/A")
+        val nombre = PreferenceHelper.getUserName(requireContext())
+        val sexo = PreferenceHelper.getUserGender(requireContext())
+        val categoria = PreferenceHelper.getUserCategory(requireContext())
 
         binding.tvNombre.text = nombre
         binding.tvGenero.text = sexo
         binding.tvCategoria.text = categoria
     }
 
+    /**
+     * Muestra un diálogo que permite editar los datos del perfil.
+     * Carga catálogos desde assets y guarda cambios con PreferenceHelper.
+     */
     private fun mostrarDialogoEditar() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_editar_perfil, null)
 
@@ -58,41 +67,39 @@ class PerfilFragment : Fragment() {
         val spinnerSexo = dialogView.findViewById<Spinner>(R.id.spinnerSexo)
         val spinnerGenero = dialogView.findViewById<Spinner>(R.id.spinnerGenero)
 
-        editNombre.setText(prefs.getString("nombre", ""))
+        val context = requireContext()
 
-        // Catálogo de sexos
-        val sexos = listOf("Masculino", "Femenino", "Otro")
-        spinnerSexo.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, sexos)
-        spinnerSexo.setSelection(sexos.indexOf(prefs.getString("sexo", "Masculino")))
+        // Cargar valores actuales
+        editNombre.setText(PreferenceHelper.getUserName(context))
+        val sexoActual = PreferenceHelper.getUserGender(context)
+        val generoActual = PreferenceHelper.getUserCategory(context)
 
-        // Catálogo desde generos.json
+        // Catálogo de sexos desde sexos.json
+        val sexos = cargarSexosDesdeAssets()
+        val adapterSexo = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, sexos.map { it.nombre })
+        spinnerSexo.adapter = adapterSexo
+        val sexoIndex = sexos.indexOfFirst { it.nombre.equals(sexoActual, ignoreCase = true) }.coerceAtLeast(0)
+        spinnerSexo.setSelection(sexoIndex)
+
+        // Catálogo de géneros desde generos.json
         val generos = leerGenerosDesdeAssets().filterNotNull()
-        val generoActual = prefs.getString("categoria", null) ?: generos.firstOrNull().orEmpty()
-
-        val adapterGenero = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, generos)
+        val adapterGenero = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, generos)
         spinnerGenero.adapter = adapterGenero
+        val generoIndex = generos.indexOfFirst { it.equals(generoActual, ignoreCase = true) }.coerceAtLeast(0)
+        spinnerGenero.setSelection(generoIndex)
 
-        // Asegura que el género actual exista en la lista
-        val selectedIndex = generos.indexOfFirst { it.equals(generoActual, ignoreCase = true) }.coerceAtLeast(0)
-        spinnerGenero.setSelection(selectedIndex)
-
-        AlertDialog.Builder(requireContext())
-            .setTitle("Editar Perfil")
+        AlertDialog.Builder(context)
+            .setTitle(R.string.editar_perfil)
             .setView(dialogView)
-            .setPositiveButton("Guardar") { _, _ ->
-                val nombre = editNombre.text.toString()
-                val sexo = spinnerSexo.selectedItem.toString()
-                val categoria = spinnerGenero.selectedItem.toString()
+            .setPositiveButton(R.string.guardar) { _, _ ->
+                val nuevoNombre = editNombre.text.toString()
+                val nuevoSexo = spinnerSexo.selectedItem.toString()
+                val nuevaCategoria = spinnerGenero.selectedItem.toString()
 
-                prefs.edit()
-                    .putString("nombre", nombre)
-                    .putString("sexo", sexo)
-                    .putString("categoria", categoria)
-                    .apply()
-
+                PreferenceHelper.saveUserInfo(context, nuevoNombre, nuevoSexo, nuevaCategoria)
                 cargarDatos()
             }
-            .setNegativeButton("Cancelar", null)
+            .setNegativeButton(R.string.cancelar, null)
             .show()
     }
 
@@ -106,6 +113,22 @@ class PerfilFragment : Fragment() {
         } catch (e: Exception) {
             e.printStackTrace()
             listOf("Drama", "Acción", "Comedia") // fallback
+        }
+    }
+
+    private fun cargarSexosDesdeAssets(): List<Sexo> {
+        return try {
+            val inputStream = requireContext().assets.open("sexos.json")
+            val reader = InputStreamReader(inputStream)
+            val tipoLista = object : TypeToken<List<Sexo>>() {}.type
+            Gson().fromJson(reader, tipoLista)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            listOf(
+                Sexo("Male", "Masculino"),
+                Sexo("Female", "Femenino"),
+                Sexo("Other", "Otro")
+            ) // fallback
         }
     }
 }
