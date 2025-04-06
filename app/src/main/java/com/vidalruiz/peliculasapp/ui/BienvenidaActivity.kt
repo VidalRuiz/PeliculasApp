@@ -4,14 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.vidalruiz.peliculasapp.R
 import com.vidalruiz.peliculasapp.databinding.ActivityBienvenidaBinding
-import com.vidalruiz.peliculasapp.data.model.Genero
-import com.vidalruiz.peliculasapp.data.model.Sexo
-import com.vidalruiz.peliculasapp.util.PreferenceHelper
-import java.io.InputStreamReader
+import com.vidalruiz.peliculasapp.utils.JsonUtils
+import com.vidalruiz.peliculasapp.utils.PreferenceHelper
 
 /**
  * BienvenidaActivity
@@ -19,8 +15,7 @@ import java.io.InputStreamReader
  * Pantalla de bienvenida que solicita al usuario su nombre, sexo y género favorito de películas.
  * Esta información se guarda en SharedPreferences utilizando PreferenceHelper.
  *
- * Los géneros se cargan desde un archivo JSON local (assets/generos.json).
- * El sexo se elige desde un Spinner con valores predefinidos ("Male", "Female", "Other").
+ * Los géneros y sexos se cargan desde archivos JSON locales (assets).
  *
  * @author Vidal Ruiz
  * @created April 5, 2025
@@ -43,53 +38,23 @@ class BienvenidaActivity : AppCompatActivity() {
 
     /**
      * Configura los spinners de sexo y género.
-     * El spinner de género carga los datos desde el archivo JSON de la carpeta assets.
      */
     private fun configurarSpinners() {
-        // Spinner Sexo (desde sexos.json)
-        val sexos = cargarSexos()
+        // Spinner Sexo
+        val sexos = JsonUtils.cargarSexosDesdeAssets(this)
         val adapterSexo = ArrayAdapter(this, android.R.layout.simple_spinner_item, sexos.map { it.nombre })
         adapterSexo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerSexo.adapter = adapterSexo
 
-        // Spinner Géneros (desde generos.json)
-        val generos = cargarGeneros()
+        // Spinner Género
+        val generos = JsonUtils.cargarGenerosDesdeAssets(this)
         val adapterGenero = ArrayAdapter(this, android.R.layout.simple_spinner_item, generos.map { it.nombre })
         adapterGenero.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerGenero.adapter = adapterGenero
     }
 
-
-    private fun cargarSexos(): List<Sexo> {
-        return try {
-            val inputStream = assets.open("sexos.json")
-            val reader = InputStreamReader(inputStream)
-            val tipoLista = object : TypeToken<List<Sexo>>() {}.type
-            Gson().fromJson(reader, tipoLista)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            listOf(
-                Sexo("Male", "Masculino"),
-                Sexo("Female", "Femenino"),
-                Sexo("Other", "Otro")
-            ) // fallback
-        }
-    }
-    /**
-     * Carga el catálogo de géneros desde el archivo generos.json en assets.
-     *
-     * @return Lista de objetos Genero
-     */
-    private fun cargarGeneros(): List<Genero> {
-        val inputStream = assets.open("generos.json")
-        val reader = InputStreamReader(inputStream)
-        val tipoLista = object : TypeToken<List<Genero>>() {}.type
-        return Gson().fromJson(reader, tipoLista)
-    }
-
     /**
      * Valida los datos ingresados y los guarda usando PreferenceHelper.
-     * Luego redirige al usuario a la pantalla principal (MainActivity).
      */
     private fun guardarPreferenciasYContinuar() {
         val nombre = binding.etNombre.text.toString().trim()
@@ -101,7 +66,7 @@ class BienvenidaActivity : AppCompatActivity() {
             return
         }
 
-        // Guardar preferencias usando la clase centralizada PreferenceHelper
+        // Guardar en SharedPreferences
         PreferenceHelper.saveUserInfo(
             context = this,
             name = nombre,

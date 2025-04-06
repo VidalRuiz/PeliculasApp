@@ -11,7 +11,7 @@ import com.vidalruiz.peliculasapp.databinding.FragmentFavoritosBinding
 import com.vidalruiz.peliculasapp.ui.detalle.DetallePeliculaFragment
 import com.vidalruiz.peliculasapp.ui.peliculas.PeliculasAdapter
 import com.vidalruiz.peliculasapp.ui.peliculas.PeliculasViewModel
-import com.vidalruiz.peliculasapp.util.toPelicula
+import com.vidalruiz.peliculasapp.utils.toPelicula
 
 class FavoritosFragment : Fragment() {
 

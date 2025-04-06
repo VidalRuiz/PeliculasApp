@@ -1,7 +1,7 @@
 package com.vidalruiz.peliculasapp.data.network
 
 import com.vidalruiz.peliculasapp.data.model.Pelicula
-import com.vidalruiz.peliculasapp.util.Endpoints
+import com.vidalruiz.peliculasapp.utils.Endpoints
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

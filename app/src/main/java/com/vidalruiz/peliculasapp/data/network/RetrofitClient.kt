@@ -1,6 +1,6 @@
 package com.vidalruiz.peliculasapp.data.network
 
-import com.vidalruiz.peliculasapp.util.ApiConfig
+import com.vidalruiz.peliculasapp.utils.ApiConfig
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

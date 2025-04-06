@@ -1,8 +1,7 @@
-package com.vidalruiz.peliculasapp.util
+package com.vidalruiz.peliculasapp.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.vidalruiz.peliculasapp.utils.Constants
 
 /*
  * PreferenceHelper

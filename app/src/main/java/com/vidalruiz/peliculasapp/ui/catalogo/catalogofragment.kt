@@ -12,7 +12,7 @@ import com.vidalruiz.peliculasapp.databinding.FragmentCatalogoBinding
 import com.vidalruiz.peliculasapp.ui.detalle.DetallePeliculaFragment
 import com.vidalruiz.peliculasapp.ui.peliculas.PeliculasAdapter
 import com.vidalruiz.peliculasapp.ui.peliculas.PeliculasViewModel
-import com.vidalruiz.peliculasapp.util.toFavoriteEntity
+import com.vidalruiz.peliculasapp.utils.toFavoriteEntity
 
 class CatalogoFragment : Fragment() {
 

@@ -8,7 +8,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import android.util.Log
-import com.vidalruiz.peliculasapp.util.LogTags
+import com.vidalruiz.peliculasapp.utils.LogTags
+
 /**
  * Author: Vidal Ruiz
  * Created on: April 4, 2025
